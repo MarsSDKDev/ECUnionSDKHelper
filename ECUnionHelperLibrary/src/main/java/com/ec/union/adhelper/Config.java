@@ -6,7 +6,7 @@ import android.Manifest;
 public class Config {
     public static final String[] PLATFORM_PERMISSION = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    public static final String PLATFORM_NAME = "toutiaoad";
+    public static final String PLATFORM_NAME = "adhelper";
 
     public static final String PLATFORM_VER = "3.2.0.1";
 
