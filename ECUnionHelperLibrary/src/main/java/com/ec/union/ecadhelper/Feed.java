@@ -64,7 +64,7 @@ public class Feed implements IECAd {
 
     @Override
     public void show(final Activity activity, ViewGroup containner, String posId, JSONObject showParam, IECAdListener adListener) {
-        UIUtils.debugToast(activity,"调用 " + Feed.class.getSimpleName() + "广告.");
+        UIUtils.debugToast(activity,"调用 '展示' " + Feed.class.getSimpleName() + "广告.");
         mActivity =activity;
         mPosId = posId;
         mShowParam = showParam;

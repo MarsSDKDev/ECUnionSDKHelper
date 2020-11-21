@@ -30,7 +30,7 @@ public class Splash implements IECAd {
 
     @Override
     public void show(final Activity activity, final ViewGroup containner, final String posId, final JSONObject showParam, final IECAdListener adListener) {
-        UIUtils.debugToast(activity,"调用 " + Splash.class.getSimpleName() + "广告.");
+        UIUtils.debugToast(activity,"调用 '展示' " + Splash.class.getSimpleName() + "广告.");
         mPosId = posId;
         hbAdListener = adListener;
 

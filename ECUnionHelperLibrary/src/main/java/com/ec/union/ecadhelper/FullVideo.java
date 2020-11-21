@@ -29,7 +29,7 @@ public class FullVideo implements IECAd {
 
     @Override
     public void show(Activity activity, ViewGroup containner, String posId, JSONObject showParam, IECAdListener adListener) {
-        UIUtils.debugToast(activity,"调用 " + FullVideo.class.getSimpleName() + "广告.");
+        UIUtils.debugToast(activity,"调用 '展示' " + FullVideo.class.getSimpleName() + "广告.");
         isPreload = showParam.optBoolean(Config.IS_PRELOAD, false);
 
         if (isPreload) {
@@ -57,7 +57,7 @@ public class FullVideo implements IECAd {
 
     public void loadAd(final Activity activity, final ViewGroup containner, final String posId, final JSONObject showParam, final IECAdListener adListener) {
 
-
+        UIUtils.debugToast(activity,"调用 '加载' " + FullVideo.class.getSimpleName() + "广告.");
         TTAdNative mTTAdNative = TTAdSdk.getAdManager().createAdNative(activity);
 
         int width = 1080;

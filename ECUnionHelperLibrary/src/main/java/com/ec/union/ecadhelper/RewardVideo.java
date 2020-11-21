@@ -38,7 +38,7 @@ public class RewardVideo implements IECAd, IECAdSync {
 
     @Override
     public void show(Activity activity, ViewGroup containner, String posId, JSONObject showParam, IECAdListener adListener) {
-        UIUtils.debugToast(activity,"调用 " + RewardVideo.class.getSimpleName() + "广告.");
+        UIUtils.debugToast(activity,"调用 '展示' " + RewardVideo.class.getSimpleName() + "广告.");
         isPreload = showParam.optBoolean(Config.IS_PRELOAD, false);
 
         if (isPreload) {
@@ -70,7 +70,7 @@ public class RewardVideo implements IECAd, IECAdSync {
 
     public void loadAd(final Activity activity, final ViewGroup containner, final String posId, final JSONObject showParam, final IECAdListener adListener) {
 
-
+        UIUtils.debugToast(activity,"调用 '加载' " + RewardVideo.class.getSimpleName() + "广告.");
         TTAdNative mTTAdNative = TTAdSdk.getAdManager().createAdNative(activity);
 
         int width = 1080;
@@ -172,6 +172,7 @@ public class RewardVideo implements IECAd, IECAdSync {
                             isReward = false;
                             if (null != adListener) {
                                 adListener.onAdReward();
+                                UIUtils.debugToast(activity,RewardVideo.class.getSimpleName() + "广告 回调奖励接口");
                             }
                         }
                     }

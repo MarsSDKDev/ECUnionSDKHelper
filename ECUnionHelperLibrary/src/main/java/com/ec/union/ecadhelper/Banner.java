@@ -38,6 +38,7 @@ public class Banner extends BaseBanner {
 
     @Override
     public void show(final Activity activity, ViewGroup containner, final String posId, final JSONObject showParam, final IECAdListener adListener) {
+        UIUtils.debugToast(mActivity,"调用 '展示' " + Banner.class.getSimpleName() + "广告.");
         mActivity = activity;
         if (null != mFrameLayout) {
             mFrameLayout.removeAllViews();

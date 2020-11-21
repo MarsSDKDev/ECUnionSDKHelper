@@ -39,7 +39,7 @@ public class Interstitial implements IECAd {
 
 
     private void showAd(final Activity activity, ViewGroup containner, final String posId, final JSONObject showParam, final IECAdListener adListener) {
-        UIUtils.debugToast(activity,"调用 " + Interstitial.class.getSimpleName() + "广告.");
+        UIUtils.debugToast(activity,"调用 '展示' " + Interstitial.class.getSimpleName() + "广告.");
         if (null != mTTAd) {
             mTTAd.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
                 @Override
