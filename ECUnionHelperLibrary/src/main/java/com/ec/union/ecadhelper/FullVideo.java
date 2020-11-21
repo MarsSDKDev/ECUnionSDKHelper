@@ -1,4 +1,4 @@
-package com.ec.union.adhelper;
+package com.ec.union.ecadhelper;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,31 +10,22 @@ import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
+import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.ec.union.ad.sdk.Ut;
 import com.ec.union.ad.sdk.api.ECAdType;
-import com.ec.union.ad.sdk.common.game.GameParam;
 import com.ec.union.ad.sdk.platform.ECAdError;
 import com.ec.union.ad.sdk.platform.IECAd;
 import com.ec.union.ad.sdk.platform.IECAdListener;
-import com.ec.union.ad.sdk.platform.IECAdSync;
 
 import org.json.JSONObject;
 
-import java.util.Map;
 
+public class FullVideo implements IECAd {
 
-public class RewardVideo implements IECAd, IECAdSync {
+    private TTFullScreenVideoAd mTTFullScreenVideoAd;
 
-    private TTRewardVideoAd mTTRewardVideoAd;
-    private boolean isRewardVideoReady;
-
-    private boolean isLoadAndShow;
-    private Map<String, String> mGameParams;
-
+    private boolean isFullVideoReady;
     private boolean isPreload;
-    private boolean isReward;
-
 
     @Override
     public void show(Activity activity, ViewGroup containner, String posId, JSONObject showParam, IECAdListener adListener) {
@@ -42,22 +33,18 @@ public class RewardVideo implements IECAd, IECAdSync {
         isPreload = showParam.optBoolean(Config.IS_PRELOAD, false);
 
         if (isPreload) {
-
-            if (isLoadAndShow) {
-                isLoadAndShow = false;
-            }
-            if (null != mTTRewardVideoAd) {
-                if (isRewardVideoReady) {
-                    mTTRewardVideoAd.showRewardVideoAd(activity);
+            if (null != mTTFullScreenVideoAd) {
+                if (isFullVideoReady) {
+                    mTTFullScreenVideoAd.showFullScreenVideoAd(activity);
                 } else {
                     if (null != adListener) {
-                        adListener.onAdFailed(new ECAdError("The reward video is not ready."));
+                        adListener.onAdFailed(new ECAdError("The full video is not ready."));
                     }
                 }
 
             } else {
                 if (null != adListener) {
-                    adListener.onAdFailed(new ECAdError(ECAdError.AD_LOAD_FAIL, "The reward video has not been loaded."));
+                    adListener.onAdFailed(new ECAdError(ECAdError.AD_LOAD_FAIL, "The full video has not been loaded."));
                 }
             }
 
@@ -86,7 +73,6 @@ public class RewardVideo implements IECAd, IECAdSync {
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(width, height)
                 .setOrientation(orientation);//必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
-        Ut.logD("isLoadAndShow:" + isLoadAndShow + " - gameParams:" + mGameParams);
 
         //这个属性，但不为0时，就是模板渲染视频广告，否则为普通视频广告
         boolean isExpress = showParam.optBoolean(Config.IS_EXPRESS, false);
@@ -94,57 +80,43 @@ public class RewardVideo implements IECAd, IECAdSync {
             builder.setExpressViewAcceptedSize(500, 500);
         }
 
-
-        if (isLoadAndShow && null != mGameParams) {
-            builder.setRewardName(mGameParams.get(GameParam.REWARD_NAME.getValue()));
-            try {
-                builder.setRewardAmount(Integer.valueOf(mGameParams.get(GameParam.REWARD_AMOUNT.getValue())));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            builder.setUserID(mGameParams.get(GameParam.USER_ID.getValue()));
-            builder.setMediaExtra(mGameParams.get(GameParam.EXTRA.getValue()));
-        } else {
-            builder.setUserID("");//用户id,必传参数
-        }
-
-
         AdSlot adSlot = builder.build();
 
-        mTTAdNative.loadRewardVideoAd(adSlot, new TTAdNative.RewardVideoAdListener() {
+        mTTAdNative.loadFullScreenVideoAd(adSlot, new TTAdNative.FullScreenVideoAdListener() {
             @Override
             public void onError(int i, String s) {
-                String rewardErr = "reward video error. fail code: " + i + "msg: " + s;
-                Ut.logI(rewardErr);
-                isRewardVideoReady = false;
+                String fullErr = "full video error. fail code: " + i + "msg: " + s;
+                Ut.logI(fullErr);
+                isFullVideoReady = false;
                 if (null != adListener) {
-                    adListener.onAdFailed(new ECAdError(i, rewardErr));
+                    adListener.onAdFailed(new ECAdError(i, fullErr));
                 }
             }
 
             @Override
-            public void onRewardVideoAdLoad(TTRewardVideoAd ttRewardVideoAd) {
+            public void onFullScreenVideoAdLoad(TTFullScreenVideoAd ttFullScreenVideoAd) {
 
-                if (null == ttRewardVideoAd) {
-                    Ut.logI("reward video ad obj is null");
-                    isRewardVideoReady = false;
+                if (null == ttFullScreenVideoAd) {
+                    Ut.logI("full video ad obj is null");
+                    isFullVideoReady = false;
                     if (null != adListener) {
-                        adListener.onAdFailed(new ECAdError(ECAdError.AD_LOAD_FAIL, "ttRewardVideoAd is null"));
+                        adListener.onAdFailed(new ECAdError(ECAdError.AD_LOAD_FAIL, "ttFullScreenVideoAd is null"));
                     }
                     return;
                 }
-                mTTRewardVideoAd = ttRewardVideoAd;
 
-                ttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
+                mTTFullScreenVideoAd = ttFullScreenVideoAd;
 
+                ttFullScreenVideoAd.setFullScreenVideoAdInteractionListener(new TTFullScreenVideoAd.FullScreenVideoAdInteractionListener() {
                     @Override
                     public void onAdShow() {
                         if (null != adListener) {
                             adListener.onAdShow();
+
                         }
 
 
-                        Ut.initVisual(activity, posId, showParam, ECAdType.REWARDVIDEO.getAdType(), null);
+                        Ut.initVisual(activity, posId, showParam, ECAdType.FULLVIDEO.getAdType(), null);
                         Ut.startVisual(posId);
 
 
@@ -159,80 +131,50 @@ public class RewardVideo implements IECAd, IECAdSync {
 
                     @Override
                     public void onAdClose() {
-
+                        isFullVideoReady = false;
 
                         Ut.stopVisual(posId);
 
-                        isRewardVideoReady = false;
 
                         if (null != adListener) {
                             adListener.onAdDismissed();
-                        }
-                        if (isReward) {
-                            isReward = false;
-                            if (null != adListener) {
-                                adListener.onAdReward();
-                            }
                         }
                     }
 
                     @Override
                     public void onVideoComplete() {
-                        Ut.logI("reward video ad onVideoComplete");
-                        isReward = true;
+                        Ut.logI("full video ad onVideoComplete");
 //                        if (null != adListener) {
 //                            adListener.onAdReward();
 //                        }
                     }
 
                     @Override
-                    public void onVideoError() {
-                        isRewardVideoReady = false;
-                        if (null != adListener) {
-                            adListener.onAdFailed(new ECAdError(ECAdError.AD_LOAD_FAIL, "onVideoError"));
-                        }
-                    }
-
-                    @Override
-                    public void onRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
-                        isReward = true;
-                        Ut.logI("onRewardVerify: " + rewardVerify + "rewardAmount: " + rewardAmount + "rewardName: " + rewardName);
-
-//                        if (rewardVerify) {
-//                            if (null != adListener) {
-//                                adListener.onAdReward();
-//                            }
-//                        }
-                    }
-
-                    @Override
                     public void onSkippedVideo() {
-
+                        Ut.logI("full video ad onSkippedVideo");
                     }
                 });
 
-                if (isPreload) {
 
-                    isRewardVideoReady = true;
+                if (isPreload) {
+                    isFullVideoReady = true;
                     if (null != adListener) {
                         adListener.onAdReady();
                     }
-
                 } else {
-                    mTTRewardVideoAd.showRewardVideoAd(activity);
+                    mTTFullScreenVideoAd.showFullScreenVideoAd(activity);
                 }
 
-                if (isLoadAndShow) {
-                    show(activity, containner, posId, showParam, adListener);
-                }
 
             }
 
             @Override
-            public void onRewardVideoCached() {
-                Ut.logI("reward video ad onRewardVideoCached");
+            public void onFullScreenVideoCached() {
+                Ut.logI("full video ad onFullScreenVideoCached");
+
             }
         });
+
 
     }
 
@@ -243,38 +185,19 @@ public class RewardVideo implements IECAd, IECAdSync {
         isPreload = showParam.optBoolean(Config.IS_PRELOAD, false);
 
         if (isPreload) {
-
             loadAd(activity, containner, posId, showParam, adListener);
-
         } else {
-            isRewardVideoReady = true;
+            isFullVideoReady = true;
             if (null != adListener) {
                 adListener.onAdReady();
             }
-
         }
 
-
-    }
-
-    @Override
-    public void loadAndShow(Activity activity, ViewGroup containner, String posId, JSONObject showParam, IECAdListener adListener, Map<String, String> gameParams) {
-
-        isPreload = showParam.optBoolean(Config.IS_PRELOAD, false);
-
-        if (isPreload) {
-            Ut.logD("loadAndShow....");
-            isLoadAndShow = true;
-            mGameParams = gameParams;
-            load(activity, containner, posId, showParam, adListener);
-        } else {
-            Ut.logD("loadAndShow 不是预加载，展示失败");
-        }
     }
 
     @Override
     public boolean isReady() {
-        return isRewardVideoReady;
+        return isFullVideoReady;
     }
 
     @Override
@@ -326,5 +249,4 @@ public class RewardVideo implements IECAd, IECAdSync {
     public void onConfigurationChanged(Activity activity, Configuration newConfig) {
 
     }
-
 }

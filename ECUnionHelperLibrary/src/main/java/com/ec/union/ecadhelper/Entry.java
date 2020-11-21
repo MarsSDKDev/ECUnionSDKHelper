@@ -1,4 +1,4 @@
-package com.ec.union.adhelper;
+package com.ec.union.ecadhelper;
 
 import android.app.Activity;
 
