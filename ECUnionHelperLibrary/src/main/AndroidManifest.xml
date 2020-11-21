@@ -207,8 +207,7 @@
         <meta-data android:name="ec_iap_use_exit_box" android:value="true"/>
         <meta-data android:name="ec_iap_sdk_id" android:value=""/>
         <meta-data android:name="ec_iap_app_id" android:value="\ 202011025"/>
-        <meta-data android:name="ec_iap_channel_id" android:value="1002"/>
-        <meta-data android:name="UMENG_CHANNEL" android:value="taptap"/>
+        <meta-data android:name="ec_iap_channel_id" android:value="666666"/>
     </application>
 
 </manifest>
