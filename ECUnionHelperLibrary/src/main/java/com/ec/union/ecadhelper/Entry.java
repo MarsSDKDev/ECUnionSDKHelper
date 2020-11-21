@@ -61,7 +61,7 @@ public class Entry extends BaseEntry {
 
     @Override
     public void onActivityCreate(Activity activity) {
-
+        UIUtils.debugToast(activity,"开始进入游戏主界面！");
     }
 
     @Override

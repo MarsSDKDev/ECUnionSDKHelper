@@ -38,7 +38,7 @@ public class RewardVideo implements IECAd, IECAdSync {
 
     @Override
     public void show(Activity activity, ViewGroup containner, String posId, JSONObject showParam, IECAdListener adListener) {
-
+        UIUtils.debugToast(activity,"调用 " + RewardVideo.class.getSimpleName() + "广告.");
         isPreload = showParam.optBoolean(Config.IS_PRELOAD, false);
 
         if (isPreload) {

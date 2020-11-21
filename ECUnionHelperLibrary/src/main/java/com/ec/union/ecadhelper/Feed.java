@@ -60,10 +60,12 @@ public class Feed implements IECAd {
 
     private String mPosId;
     private JSONObject mShowParam;
+    private Activity mActivity;
 
     @Override
     public void show(final Activity activity, ViewGroup containner, String posId, JSONObject showParam, IECAdListener adListener) {
-
+        UIUtils.debugToast(activity,"调用 " + Feed.class.getSimpleName() + "广告.");
+        mActivity =activity;
         mPosId = posId;
         mShowParam = showParam;
         mAdListener = adListener;
@@ -436,6 +438,7 @@ public class Feed implements IECAd {
     @Override
     public void setVisibility(boolean visibility) {
         Ut.logI("feed view visibility=" + visibility);
+        UIUtils.debugToast(mActivity,"显示隐藏 " + Feed.class.getSimpleName() + "广告. 状态:"+visibility);
         mVisibility = visibility;
         if (null != mContainner) {
             if (visibility) {

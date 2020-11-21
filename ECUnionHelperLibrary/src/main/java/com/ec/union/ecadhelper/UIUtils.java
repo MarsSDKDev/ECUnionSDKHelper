@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -223,4 +226,25 @@ public class UIUtils {
             }
         return sIsMiui;
     }
+
+    public static void debugToast(final Activity context, final String msg){
+        if(null == context){
+            Log.d("CCCCCC","context is null.");
+            return;
+        }
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Toast toast = Toast.makeText(context.getApplicationContext(), msg + "\n !!!注意,出母包的时候请将测试模块移除,提示将会消失!!! ", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
 }

@@ -33,11 +33,12 @@ public class Banner extends BaseBanner {
     private boolean mVisibility = true;
     private FrameLayout mFrameLayout;
     private TTNativeExpressAd mTTAd;
+    private Activity mActivity;
 
 
     @Override
     public void show(final Activity activity, ViewGroup containner, final String posId, final JSONObject showParam, final IECAdListener adListener) {
-
+        mActivity = activity;
         if (null != mFrameLayout) {
             mFrameLayout.removeAllViews();
         }
@@ -225,7 +226,7 @@ public class Banner extends BaseBanner {
     public void setVisibility(boolean visibility) {
 
         mVisibility = visibility;
-
+        UIUtils.debugToast(mActivity,"显示隐藏 " + Banner.class.getSimpleName() + "广告. 状态:"+visibility);
         if (null != mContainner) {
             if (visibility) {
                 Ut.logI("tt banner setVisibility VISIBLE" );
