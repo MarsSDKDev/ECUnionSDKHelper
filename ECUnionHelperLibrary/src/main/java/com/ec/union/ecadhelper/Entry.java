@@ -1,6 +1,9 @@
 package com.ec.union.ecadhelper;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
 
 import com.bytedance.sdk.openadsdk.TTAdConfig;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
@@ -60,6 +63,21 @@ public class Entry extends BaseEntry {
     }
 
     @Override
+    public void onApplicationConfigurationChanged(Context context, Configuration configuration) {
+
+    }
+
+    @Override
+    public void onApplicationTerminate(Context context) {
+
+    }
+
+    @Override
+    public void onApplicationLowMemory(Context context) {
+
+    }
+
+    @Override
     public void onActivityCreate(Activity activity) {
         UIUtils.debugToast(activity,"开始进入游戏主界面！");
     }
@@ -91,6 +109,26 @@ public class Entry extends BaseEntry {
 
     @Override
     public void onStop(Activity activity) {
+
+    }
+
+    @Override
+    public void onNewIntent(Activity activity, Intent intent) {
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Activity activity, Configuration configuration) {
+
+    }
+
+    @Override
+    public void onActivityResult(Activity activity, int i, int i1, Intent intent) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(Activity activity, int i, String[] strings, int[] ints) {
 
     }
 }
